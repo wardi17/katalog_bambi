@@ -39,7 +39,7 @@ class LoginModel {
 			];
 		}
 	
-
+	
 		if (empty($datas))
 		{
 			$userdata = null;

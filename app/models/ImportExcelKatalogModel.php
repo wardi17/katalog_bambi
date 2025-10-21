@@ -233,5 +233,67 @@ class ImportExcelKatalogModel extends Models
 
         return array("status" => "ok");
     }
+
+
+
+    // untuk menamilkan kataloge 
+
+    public function getkategori(){
+
+        $query  ="USP_GetKategori";
+        $result= $this->db->baca_sql2($query);
+                    $datafull =[];
+            while(odbc_fetch_row($result)){
+                $datafull[] =[
+                    "Kategori"=>rtrim(odbc_result($result,'Kategori')),
+                ];
+
+            }
+            
+			 array_walk_recursive($datafull, function(&$value) {
+				if (is_string($value)) {
+					$value = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+				}
+			});
+   
+        return $datafull;
+    }
+
+
+     // untuk tampil data  produk list
+
+     public function listdata(){
+         $data = file_get_contents('php://input');
+         $post = json_decode($data, true);
+    
+         $kategori = isset($post["kategori"]) ? $post["kategori"] : '';
+        $query  ="USP_TampilProdukKatalog '{$kategori}'";
+  
+        $result= $this->db->baca_sql2($query);
+            $datafull =[];
+            while(odbc_fetch_row($result)){
+                $datafull[] =[
+                    "NoExel"=>rtrim(odbc_result($result,'NoExel')),
+                    "Jenis"=>rtrim(odbc_result($result,'Jenis')),
+                    "Kategori"=>rtrim(odbc_result($result,'Kategori')),
+                    "Partid"=>rtrim(odbc_result($result,'Partid')),
+                    "Gambar"=>rtrim(odbc_result($result,'Gambar')),
+                    "UkuranKarton"=>rtrim(odbc_result($result,'UkuranKarton')),
+                    "RawMaterial"=>rtrim(odbc_result($result,'RawMaterial')),
+                    "Mekanik"=>rtrim(odbc_result($result,'Mekanik')),
+                    "Ukuran"=>rtrim(odbc_result($result,'Ukuran')),
+                    "Kapasitas"=>rtrim(odbc_result($result,'Kapasitas')),
+                    "Punggung"=>rtrim(odbc_result($result,'Punggung')),
+                    "LabelPunggung"=>rtrim(odbc_result($result,'LabelPunggung')),
+                    "Fitur"=>rtrim(odbc_result($result,'Fitur')),
+                    "KodeWarna"=>rtrim(odbc_result($result,'KodeWarna')),
+                    "Video"=>rtrim(odbc_result($result,'Video')),
+                ];
+
+            }
+
+            //$this->consol_war($datafull);
+           return $datafull;
+     }
 }
 ?>

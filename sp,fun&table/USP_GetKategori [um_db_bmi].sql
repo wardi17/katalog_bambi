@@ -1,0 +1,17 @@
+use [um_db_bmi]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE USP_GetKategori
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+    SELECT DISTINCT Kategori FROM ProdukKatalog
+END
+GO
+EXEC USP_GetKategori

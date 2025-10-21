@@ -23,12 +23,9 @@ class Login extends Controller {
 				$_SESSION['jabatan'] = $row['jabatan'];
 				$_SESSION['log_menu'] = $row['log_menu'];
 
-				if($row['username'] =="herman" OR $row['username'] =="wardi"){
-					$_SESSION['level_user'] =77;
-				}
-				
+			
 				//if($row['username'])
-				header('location: '. base_url . '/home');
+				header('location: '. base_url . '/import');
 		} else {
 			Flasher::setMessage('Username / Password','salah.','danger');
 			header('location: '. base_url . '/login');

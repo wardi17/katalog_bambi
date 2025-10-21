@@ -19,21 +19,29 @@ $page = isset($data['page']) ? $data['page'] : '';
             Import Excel
           </a>
         </li>
-
       </ul>
       
-      <!-- Desktop fallback: Jika md:hidden tidak bekerja, tapi seharusnya ul ini visible di desktop -->
-      
-      <!-- RIGHT: Mobile Menu Button -->
-      <button id="menu-btn" class="md:hidden text-white focus:outline-none transition-transform duration-200 hover:scale-110">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
+      <!-- RIGHT: Logout Link (Desktop) + Mobile Menu Button -->
+      <div class="flex items-center space-x-4">
+        <!-- Logout Link (visible di desktop) -->
+        <a href="<?= base_url ?>/logout" 
+           class="hidden md:block no-underline transition-all duration-200 font-semibold px-4 py-2 rounded-lg text-base 
+                  text-white hover:bg-indigo-500 hover:text-gray-100"
+           style="text-decoration: none;">
+          Logout
+        </a>
+        
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" class="md:hidden text-white focus:outline-none transition-transform duration-200 hover:scale-110">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
   
-  <!-- Mobile Dropdown Menu (sekarang include Beranda untuk konsistensi) -->
+  <!-- Mobile Dropdown Menu (sekarang include Beranda dan Logout) -->
   <div id="mobile-menu" class="hidden md:hidden bg-indigo-700 border-t border-indigo-500">
     <ul class="flex flex-col space-y-4 p-6 list-none m-0">
       <li class="list-none">
@@ -46,7 +54,15 @@ $page = isset($data['page']) ? $data['page'] : '';
           Import Excel
         </a>
       </li>
-    
+      <!-- Logout Item di Mobile -->
+      <li class="list-none">
+        <a href="<?= base_url ?>/logout" 
+           class="no-underline block px-4 py-3 rounded-lg transition-all duration-200 font-semibold text-base 
+                  text-white hover:bg-indigo-600 hover:text-gray-100"
+           style="text-decoration: none;">
+          Logout
+        </a>
+      </li>
     </ul>
   </div>
 </nav>

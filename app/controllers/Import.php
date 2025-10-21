@@ -5,14 +5,14 @@ class Import extends Controller{
 	private $userid;
 	public function __construct()
 	{	
-		$this->userid ="wardi";
-		// if($_SESSION['login_user'] == '') {
-		// 	Flasher::setMessage('Login','Tidak ditemukan.','danger');
-		// 	header('location: '. base_urllogin);
-		// 	exit;
-		// }else{
-		// 	$this->userid = $_SESSION['login_user'];
-		// }
+		if($_SESSION['session_login'] != 'sudah_login') {
+			Flasher::setMessage('Login','Tidak ditemukan.','danger');
+			header('location: '. base_url . '/login');
+			exit;
+		}else{
+			$this->userid = isset($_SESSION['nama']) ? $_SESSION['nama'] : "";
+		
+		} 
 
 	} 
 

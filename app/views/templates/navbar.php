@@ -1,41 +1,31 @@
 <?php
 $page = isset($data['page']) ? $data['page'] : '';
-$categories = isset($data['categories']) ? $data['categories'] : ''; // contoh default
-$currentCategory = isset($data['categories']) ? $data['categories'] : '';
+$categories = isset($data['categories']) ? $data['categories'] : [];
+$currentCategory = isset($_GET['category']) ? $_GET['category'] : '';
 ?>
 
 <nav class="fixed top-0 left-0 w-full bg-indigo-600 shadow-lg z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
-
-      <!-- LOGO -->
-      <!-- <div class="flex items-center">
-        <a href="<?= base_url ?>" class="text-white font-bold text-lg tracking-wide hover:text-indigo-200 transition">
-          Katalog Produk
-        </a>
-      </div> -->
-
       <!-- NAVBAR MENU -->
       <ul id="menu" class="hidden md:flex items-center space-x-4 list-none m-0 p-0">
-   
-        <!-- KATEGORI PRODUK -->
-         <?php if (!empty($categories) && is_array($categories)) : ?>
-        <?php foreach ($categories as $cat): ?>
-          <li>
-            <a href="<?= base_url ?>?category=<?= urlencode($cat) ?>"
-               class="no-underline transition-all duration-200 font-medium px-4 py-2 rounded-lg text-base block 
-                      <?= ($currentCategory === $cat) 
-                          ? 'bg-indigo-400 text-white shadow-md' 
-                          : 'text-white hover:bg-indigo-500 hover:text-gray-100' ?>"
-               style="text-decoration: none; white-space: nowrap;">
-              <?= htmlspecialchars($cat) ?>
-            </a>
-          </li>
-        <?php endforeach; ?>
-    <?php else : ?>
-        <li><em>Tidak ada kategori</em></li>
-    <?php endif; ?>
-  
+        <?php if (!empty($categories) && is_array($categories)) : ?>
+          <?php foreach ($categories as $cat): ?>
+            <?php $kategori = $cat['Kategori']; ?>
+            <li>
+              <a href="<?= base_url ?>?category=<?= urlencode($kategori) ?>"
+                 class="no-underline transition-all duration-200 font-medium px-4 py-2 rounded-lg text-base block 
+                        <?= ($currentCategory === $kategori)
+                            ? 'bg-indigo-400 text-white shadow-md' 
+                            : 'text-white hover:bg-indigo-500 hover:text-gray-100' ?>"
+                 style="text-decoration: none; white-space: nowrap;">
+                <?= htmlspecialchars($kategori) ?>
+              </a>
+            </li>
+          <?php endforeach; ?>
+        <?php else : ?>
+          <li><em>Tidak ada kategori</em></li>
+        <?php endif; ?>
       </ul>
 
       <!-- MOBILE BUTTON -->
@@ -50,22 +40,23 @@ $currentCategory = isset($data['categories']) ? $data['categories'] : '';
   <!-- MOBILE MENU -->
   <div id="mobile-menu" class="hidden md:hidden bg-indigo-700 border-t border-indigo-500">
     <ul class="flex flex-col space-y-4 p-6 list-none m-0">
-   <?php if (!empty($categories) && is_array($categories)) : ?>
-      <?php foreach ($categories as $cat): ?>
-        <li>
-          <a href="<?= base_url ?>?category=<?= urlencode($cat) ?>"
-             class="no-underline block px-4 py-3 rounded-lg transition-all duration-200 font-medium text-base 
-                    <?= ($currentCategory === $cat)
-                        ? 'bg-indigo-500 text-white shadow-md'
-                        : 'text-white hover:bg-indigo-600 hover:text-gray-100' ?>"
-             style="text-decoration: none;">
-            <?= htmlspecialchars($cat) ?>
-          </a>
-        </li>
-      <?php endforeach; ?>
-         <?php else : ?>
+      <?php if (!empty($categories) && is_array($categories)) : ?>
+        <?php foreach ($categories as $cat): ?>
+          <?php $kategori = $cat['Kategori']; ?>
+          <li>
+            <a href="<?= base_url ?>?category=<?= urlencode($kategori) ?>"
+               class="no-underline block px-4 py-3 rounded-lg transition-all duration-200 font-medium text-base 
+                      <?= ($currentCategory === $kategori)
+                          ? 'bg-indigo-500 text-white shadow-md'
+                          : 'text-white hover:bg-indigo-600 hover:text-gray-100' ?>"
+               style="text-decoration: none;">
+              <?= htmlspecialchars($kategori) ?>
+            </a>
+          </li>
+        <?php endforeach; ?>
+      <?php else : ?>
         <li><em>Tidak ada kategori</em></li>
-    <?php endif; ?>
+      <?php endif; ?>
     </ul>
   </div>
 </nav>

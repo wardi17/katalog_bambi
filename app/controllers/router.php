@@ -5,7 +5,7 @@ class Router
 
     public $controler = [
         "import"      => "ImportController",
-        "msbarang"   => "Msbarang",
+        "produk"   => "Produk",
         "mslokasi" => "Mslokasi",
        
     ];

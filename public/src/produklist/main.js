@@ -1,12 +1,12 @@
-import Listbarang from './components/Listbarang.js';
+import ListProduk from './components/Listproduk.js';
 // Pastikan kode jalan setelah DOM siap
 document.addEventListener("DOMContentLoaded", () => {
   const url = new URL(window.location.href);
   const pathSegments = url.pathname.split("/").filter(Boolean);
   const lastSegment = pathSegments.pop();
 
-  // Inisialisasi komponen Listbarang sekali
-  const listBarang = new Listbarang();
+  // Inisialisasi komponen Listproduk sekali
+  const Listproduk = new ListProduk();
 
   // Delegasi event click secara efisien
   document.body.addEventListener("click", (event) => {
@@ -14,16 +14,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (target.matches("#BtnBatal, #kembalihider")) {
       event.preventDefault();
-      goBack(listBarang);
+      goBack(Listproduk);
     }
   });
 });
 
+
+
+
+
+
+
+
 // Fungsi untuk kembali dan refresh data (tanpa membuat instance baru)
-export default function goBack(listBarangInstance) {
-  if (listBarangInstance && typeof listBarangInstance.refresh === "function") {
-    listBarangInstance.refresh(); // Jika Listbarang punya method refresh()
+export default function goBack(ListprodukInstance) {
+  if (ListprodukInstance && typeof ListprodukInstance.refresh === "function") {
+    ListprodukInstance.refresh(); // Jika Listproduk punya method refresh()
   } else {
-    new Listbarang(); // fallback jika belum ada instance reuse
+    new Listproduk(); // fallback jika belum ada instance reuse
   }
 }

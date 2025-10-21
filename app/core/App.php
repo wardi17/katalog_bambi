@@ -10,7 +10,7 @@ class App{
 		
 		$url = $this->parseURL();
 	
-			
+		
 		if(file_exists('../app/controllers/' . $url[0] . '.php')){
 			$this->controller = $url[0] ;
 			unset($url[0]);
@@ -40,13 +40,20 @@ class App{
 
 	public function parseURL(){
 		
+	
 		if( isset($_GET['url'])){
 			$url = rtrim($_GET['url'], '/');
-		
 			$url = filter_var($url, FILTER_SANITIZE_URL);
-			
 			$url = explode('/',$url);
-					return $url;
+			return $url;		
+		}else{
+			$category =isset($_GET['category']) ? $_GET['category'] : '';
+			if($category !==''){
+			 $url = explode('/','produk/index');
+			 return $url;
+			}
+			
 		}
 	}
+
 }
