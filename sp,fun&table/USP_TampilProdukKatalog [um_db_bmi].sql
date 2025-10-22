@@ -15,4 +15,4 @@ BEGIN
      FROM ProdukKatalog WHERE Kategori = @Kategori
 END
 GO
-EXEC USP_TampilProdukKatalog 'PVC LAC'
+EXEC USP_TampilProdukKatalog 'PVC LAC' 
