@@ -1,5 +1,6 @@
 import { baseUrl } from '../../config.js';
 
+
 class ListProduk {
   constructor() {
     this.root = document.getElementById('root');
@@ -118,7 +119,10 @@ class ListProduk {
       </div>
     `;
     container.appendChild(modal);
+    const closeBtn = modal.querySelector('.close');
+    closeBtn.addEventListener('click', () => this.closeModal());
 
+    //and modal
     const list = document.createElement('div');
     list.id = 'dataList';
     list.innerHTML = `
@@ -265,13 +269,50 @@ class ListProduk {
     const modalBody = document.getElementById('modalBody');
     const fallback = 'https://placehold.co/600x400?text=No+Image';
 
+      // Ambil ID Google Drive
+      function getGoogleDriveId(originalUrl) {
+        const match = originalUrl.match(/\/d\/([^/]+)/);
+        return match && match[1] ? match[1] : null;
+      }
+    if(type === 'video') {
+      // Jika video, tambahkan parameter autoplay
+    
+       const id = getGoogleDriveId(url);
+       const proxyUrl = `proxy.php?id=${id}`;
+       url = proxyUrl;
+    }
+    // Simpan tipe konten ke dataset agar bisa dicek nanti
+     modal.dataset.type = type;
     modalBody.innerHTML =
       type === 'image'
         ? `<img src="${url}" alt="Gambar" onerror="this.src='${fallback}'">`
-        : `<iframe src="${url}" frameborder="0" allowfullscreen></iframe>`;
+        : `    <video width="100%" height="auto" controls autoplay playsinline style="max-height:80vh;">
+      <source src="${url}" type="video/mp4">
+      Video tidak bisa diputar.
+    </video>`;
 
     modal.style.display = 'flex';
   }
+
+// Tambahkan fungsi untuk tombol Close
+closeModal() {
+  const modal = document.getElementById('mediaModal');
+  const modalBody = document.getElementById('modalBody');
+  const type = modal.dataset.type;
+
+  // Jika modal berisi video, hentikan pemutaran
+  if (type === 'video') {
+    const iframe = modalBody.querySelector('iframe');
+    if (iframe) {
+      iframe.src = ''; // reset src untuk menghentikan video autoplay
+    }
+  }
+
+  modal.style.display = 'none';
+  modalBody.innerHTML = ''; // bersihkan konten
+}
+
+
 
   async getdatalist() {
     const kategoriInput = document.getElementById('kategori');
@@ -318,5 +359,5 @@ class ListProduk {
     table.on('draw', () => this.initModalBehavior());
   }
 }
-
+const listProduk = new ListProduk();
 export default ListProduk;

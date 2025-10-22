@@ -149,7 +149,7 @@ class ImportExcelKatalogModel extends Models
                 IF NOT EXISTS (SELECT 1 FROM " . $this->table_produk . " WHERE Partid = '{$partid}')
                 BEGIN
                     INSERT INTO " . $this->table_produk . " 
-                    (NoExel, Jenis, Kategori, Partid, Gambar, UkuranKarton, RawMaterial, Mekanik, Ukuran,
+                    (NoExel, Jenis, HeaderKategori, Partid, Gambar, UkuranKarton, RawMaterial, Mekanik, Ukuran,
                     Kapasitas, Punggung, LabelPunggung, Fitur, KodeWarna, Video, CreateUser)
                     VALUES
                     ('{$no}', '{$jenis}', '{$kategori}', '{$partid}', '{$gambar}', '{$ukuran_karton}', '{$row_material}', '{$mekanik}', '{$ukuran}',
@@ -245,7 +245,7 @@ class ImportExcelKatalogModel extends Models
                     $datafull =[];
             while(odbc_fetch_row($result)){
                 $datafull[] =[
-                    "Kategori"=>rtrim(odbc_result($result,'Kategori')),
+                    "Kategori"=>rtrim(odbc_result($result,'HeaderKategori')),
                 ];
 
             }
@@ -266,8 +266,9 @@ class ImportExcelKatalogModel extends Models
          $data = file_get_contents('php://input');
          $post = json_decode($data, true);
     
-         $kategori = isset($post["kategori"]) ? $post["kategori"] : '';
+         $kategori = isset($post["kategori"]) ? str_replace('-', ' ', $post["kategori"]) : '';
         $query  ="USP_TampilProdukKatalog '{$kategori}'";
+        //$this->consol_war($query);
   
         $result= $this->db->baca_sql2($query);
             $datafull =[];

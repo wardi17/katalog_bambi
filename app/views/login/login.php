@@ -30,7 +30,7 @@
   <div class="w-full max-w-md bg-white bg-opacity-90 backdrop-blur-md rounded-2xl shadow-2xl p-8 fade-in">
     <!-- Logo -->
     <div class="text-center mb-8">
-      <h1 class="text-3xl font-bold text-gray-800">Admin Kategori</h1>
+      <h1 class="text-3xl font-bold text-gray-800">Admin Katalog Bambi</h1>
       <p class="text-gray-600 mt-2">Silahkan login terlebih dahulu.</p>
     </div>
 

@@ -1,12 +1,15 @@
 use [um_db_bmi]
 GO
+IF OBJECT_ID('dbo.ProdukKatalog', 'U') IS NOT NULL
+    DROP TABLE dbo.ProdukKatalog;
+GO
 
-DROP TABLE ProdukKatalog
 CREATE TABLE ProdukKatalog (
     ItemNO INT  IDENTITY(1,1) NOT NULL,
     NoExel INT NOT NULL,
     Partid char(10) PRIMARY KEY,
-    Kategori VARCHAR(100) NOT NULL,
+    HeaderKategori NVARCHAR(100)  NULL,
+    SubKategori NVARCHAR(100) NULL,
     Jenis NVARCHAR(100) NOT NULL,
     Gambar NVARCHAR(255) NULL,  -- bisa simpan nama file atau URL gambar
 
