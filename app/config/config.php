@@ -4,6 +4,7 @@ $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https:/
 $host = $_SERVER['HTTP_HOST'];
 //$currentUrl = $protocol . $host;
 $currentUrl = $protocol . $host.'/wardibaset';
+//$currentUrl ="http://192.168.11.186/wardibaset";
 define('base_url', $currentUrl . '/katalog_bambi/public');
 define('base_urllogin', $currentUrl . '/bmi/public/_login_proses/');
 define('DB_HOST', 'localhost');

@@ -1,6 +1,5 @@
 import { baseUrl } from '../../config.js';
-
-
+import Helper from './Helper.js';
 class ListProduk {
   constructor() {
     this.root = document.getElementById('root');
@@ -12,7 +11,7 @@ class ListProduk {
     const style = document.createElement('style');
     style.textContent = `
       #thead {
-        background-color: #E7CEA6 !important;
+        background-color: #68B5F1 !important;
       }
       .table-hover tbody tr:hover td,
       .table-hover tbody tr:hover th {
@@ -139,6 +138,7 @@ class ListProduk {
 
     try {
       const datalist = await this.getdatalist();
+      
       requestAnimationFrame(() => {
         list.innerHTML = this.settable(datalist);
         this.Tampildatatabel();
@@ -155,14 +155,14 @@ class ListProduk {
   }
 
   settable(data) {
+        //  <th class="text-center" rowspan="2">KATEGORI</th>
+        //     <th class="text-center" rowspan="2">PARTID</th>
     return `
       <table id="table1" class="min-w-full border border-gray-400 border-collapse text-sm text-center table-hover">
         <thead id="thead">
           <tr>
             <th class="text-center" rowspan="2">NO</th>
             <th class="text-center" rowspan="2">JENIS</th>
-            <th class="text-center" rowspan="2">KATEGORI</th>
-            <th class="text-center" rowspan="2">PARTID</th>
             <th class="text-center" rowspan="2">GAMBAR</th>
             <th class="text-center" colspan="3">PRODUK SPESIFIKASI</th>
             <th class="text-center" rowspan="2">UKURAN</th>
@@ -170,7 +170,6 @@ class ListProduk {
             <th class="text-center" rowspan="2">PUNGGUNG</th>
             <th class="text-center" rowspan="2">LABEL PUNGGUNG</th>
             <th class="text-center" rowspan="2">FITUR</th>
-            <th class="text-center"  rowspan="2">WARNA</th>
             <th class="text-center" rowspan="2">VIDEO</th>
           </tr>
           <tr>
@@ -220,22 +219,21 @@ class ListProduk {
           ? `<span class="video-link" data-url="${vidUrl}">Lihat Video</span>`
           : `<span style="color:gray;">Tidak ada video</span>`;
 
+            //   <td>${item.Kategori || ''}</td>
+            // <td>${item.Partid || ''}</td>
         return `
           <tr>
             <td>${item.NoExel || ''}</td>
-            <td>${item.Jenis || ''}</td>
-            <td>${item.Kategori || ''}</td>
-            <td>${item.Partid || ''}</td>
+            <td>${Helper.spasiToEnterTd(item.Jenis) || ''}</td>
             <td>${imgTag}</td>
-            <td>${item.UkuranKarton || ''}</td>
-            <td>${item.RawMaterial || ''}</td>
+            <td>${Helper.spasiToEnterTd(item.UkuranKarton) || ''}</td>
+            <td>${Helper.spasiToEnterTd(item.RawMaterial) || ''}</td>
             <td>${item.Mekanik || ''}</td>
             <td>${item.Ukuran || ''}</td>
             <td>${item.Kapasitas || ''}</td>
             <td>${item.Punggung || ''}</td>
             <td>${item.LabelPunggung || ''}</td>
-            <td>${item.Fitur || ''}</td>
-            <td>${item.KodeWarna || ''}</td>
+            <td>${Helper.spasiToEnterTd(item.Fitur) || ''}</td>
             <td>${vidTag}</td>
           </tr>`;
       })
@@ -274,22 +272,23 @@ class ListProduk {
         const match = originalUrl.match(/\/d\/([^/]+)/);
         return match && match[1] ? match[1] : null;
       }
-    if(type === 'video') {
-      // Jika video, tambahkan parameter autoplay
+    // if(type === 'video') {
+    //   // Jika video, tambahkan parameter autoplay
     
-       const id = getGoogleDriveId(url);
-       const proxyUrl = `proxy.php?id=${id}`;
-       url = proxyUrl;
-    }
+    //    const id = getGoogleDriveId(url);
+    //    const proxyUrl = `proxy.php?id=${id}`;
+    //    url = proxyUrl;
+    // }
     // Simpan tipe konten ke dataset agar bisa dicek nanti
      modal.dataset.type = type;
     modalBody.innerHTML =
       type === 'image'
         ? `<img src="${url}" alt="Gambar" onerror="this.src='${fallback}'">`
-        : `    <video width="100%" height="auto" controls autoplay playsinline style="max-height:80vh;">
-      <source src="${url}" type="video/mp4">
-      Video tidak bisa diputar.
-    </video>`;
+        : `<iframe src="${url}" frameborder="0" allowfullscreen></iframe>`;
+    //     : `    <video width="100%" height="auto" controls autoplay playsinline style="max-height:80vh;">
+    //   <source src="${url}" type="video/mp4">
+    //   Video tidak bisa diputar.
+    // </video>`;
 
     modal.style.display = 'flex';
   }

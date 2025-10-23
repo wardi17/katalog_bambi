@@ -11,8 +11,9 @@ AS
 BEGIN
 
 	SET NOCOUNT ON;
-    SELECT  NoExel,Partid,HeaderKategori AS Kategori,Jenis,Gambar,UkuranKarton,RawMaterial,Mekanik,Ukuran,Kapasitas,Punggung,LabelPunggung,Fitur, KodeWarna,Video
-     FROM ProdukKatalog WHERE HeaderKategori = @Kategori
+    SELECT  NoExel,Partid,HeaderKategori,SubKategori,Jenis,Gambar,UkuranKarton,RawMaterial,Mekanik,Ukuran,Kapasitas,Punggung,LabelPunggung,Fitur, KodeWarna,Video,
+    KapasitasUkuran, PunggungUkuran,WaranUkuran
+     FROM ProdukKatalog WHERE HeaderKategori = @Kategori OR SubKategori = @Kategori
 END
 GO
-EXEC USP_TampilProdukKatalog 'PVC LAC' 
+EXEC USP_TampilProdukKatalog 'PVC LAF' 

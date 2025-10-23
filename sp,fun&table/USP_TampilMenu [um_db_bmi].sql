@@ -38,11 +38,12 @@ BEGIN
        
      END
       
-     select A.Romawi,A.SubRomawi,A.NamaMenu,A.HeaderKategori,A.SubKategori,B.HeaderKategori AS linkheader ,C.SubKategori AS linkdetail FROM  MasterMenuKatalog AS A
+     select A.Romawi,A.SubRomawi,A.NamaMenu,A.HeaderKategori,A.SubKategori,B.HeaderKategori AS linkheader ,C.SubKategori AS linkdetail 
+     FROM  MasterMenuKatalog AS A
      LEFT JOIN #templinkhider  AS B
      ON B.HeaderKategori = A.HeaderKategori
      LEFT JOIN #templinkdetail  AS C
-     ON C.SubKategori = A.SubKategori
+     ON C.SubKategori = A.SubKategori  ORDER BY A.Romawi,A.SubRomawi
     
 END
 GO

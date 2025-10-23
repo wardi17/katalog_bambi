@@ -102,4 +102,38 @@ private function numberToAlphabet($num)
         return $datafull;   
         
     }
+
+            public function getlabeltitle($category)
+            {
+                // Pastikan kategori tidak null / kosong
+                if (empty($category)) {
+                    $this->consol_war("Kategori kosong");
+                    return '';
+                }
+
+                // Gunakan kueri SELECT agar fungsi bisa dieksekusi di SQL Server
+                $query = "SELECT dbo.FUN_GetLabelTitle('$category') AS LabelTitle";
+
+                // Jalankan query menggunakan fungsi baca_sql2 (pastikan return resource ODBC)
+                $result = $this->db->baca_sql2($query);
+
+                // Inisialisasi default
+                $labeltitle = '';
+
+                if ($result) {
+                    if (odbc_fetch_row($result)) {
+                        $labeltitle = trim(odbc_result($result, 'LabelTitle'));
+                    } else {
+                        $this->consol_war("Data tidak ditemukan untuk kategori: $category");
+                    }
+                } else {
+                    $this->consol_war("Query gagal dijalankan: $query");
+                }
+
+                // Optional: tampilkan ke log/console
+                //$this->consol_war("LabelTitle hasil: " . $labeltitle);
+
+                return $labeltitle;
+            }
+
 }

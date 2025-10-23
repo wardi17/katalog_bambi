@@ -5,6 +5,7 @@ class Produk extends Controller{
     private $userid;
     private $model;
     private $model_color;
+    private $model_menu;
     private $category;
     public function __construct()
     {	
@@ -12,14 +13,8 @@ class Produk extends Controller{
     
         $this->model = $this->model('ImportExcelKatalogModel');
         $this->model_color = $this->model('MsWarnaModel');
-        $this->userid ="wardi";
-        // if($_SESSION['login_user'] == '') {
-        // 	Flasher::setMessage('Login','Tidak ditemukan.','danger');
-        // 	header('location: '. base_urllogin);
-        // 	exit;
-        // }else{
-        // 	$this->userid = $_SESSION['login_user'];
-        // }
+        $this->model_menu = $this->model('MenuModel');
+
 
     } 
 
@@ -27,11 +22,10 @@ class Produk extends Controller{
         {
             $data["categories"]= $this->model->getkategori();
             $data["mswarna"]= $this->model_color->getwarna($this->category);
-
+            $data["labeltitle"]= $this->model_menu->getlabeltitle($this->category);
+            $data["category"]= $this->category;
            // $this->consol_war($data["mswarna"]);
             $data["page"] ="poduk";
-            $data["userid"] =$this->userid;
-            $data["category"] =$this->category;
             $this->view('templates/header');
             $this->view('templates/navbar', $data);
             $this->view('produk/index',$data);

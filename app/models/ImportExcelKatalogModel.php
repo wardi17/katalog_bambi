@@ -61,19 +61,20 @@ class ImportExcelKatalogModel extends Models
         $expectedHeaders = array(
             'B' => 'NO',
             'C' => 'JENIS',
-            'D' => 'KATEGORI',
-            'E' => 'PARTID',
-            'F' => 'GAMBAR',
-            'G' => 'PRODUK SPESIFIKASI | UKURAN KARTON',
-            'H' => 'PRODUK SPESIFIKASI | RAW MATERIAL',
-            'I' => 'PRODUK SPESIFIKASI | MEKANIK',
-            'J' => 'UKURAN',
-            'K' => 'KAPASITAS',
-            'M' => 'PUNGGUNG',
-            'O' => 'LABEL PUNGGUNG',
-            'P' => 'FITUR',
-            'Q' => 'WARNA',
-            'S' => 'VIDEO'
+            'D' => 'HEAD KATEGORI',
+            'E' => 'KATEGORI',
+            'F' => 'PARTID',
+            'G' => 'GAMBAR',
+            'H' => 'PRODUK SPESIFIKASI | UKURAN KARTON',
+            'I' => 'PRODUK SPESIFIKASI | RAW MATERIAL',
+            'J' => 'PRODUK SPESIFIKASI | MEKANIK',
+            'K' => 'UKURAN',
+            'L' => 'KAPASITAS',
+            'N' => 'PUNGGUNG',
+            'P' => 'LABEL PUNGGUNG',
+            'Q' => 'FITUR',
+            'R' => 'WARNA',
+            'T' => 'VIDEO'
         );
 
         // Validasi header
@@ -85,25 +86,30 @@ class ImportExcelKatalogModel extends Models
         $username = isset($_SESSION['login_user']) ? $_SESSION['login_user'] : 'unknown';
         $duplicateList = array();
 
+        //this->consol_war($rows);
         // --- Proses setiap baris data ---
         foreach ($rows as $index => $row) {
             if ($index <= 9) continue; // lewati header
 
             $no            = trim($row["B"]);
             $jenis         = trim($row["C"]);
-            $kategori      = trim($row["D"]);
-            $partid        = trim($row["E"]);
-            $gambar        = trim($row["F"]);
-            $ukuran_karton = trim($row["G"]);
-            $row_material  = trim($row["H"]);
-            $mekanik       = trim($row["I"]);
-            $ukuran        = trim($row["J"]);
-            $kapasitas     = trim($row["K"]);
-            $punggung      = trim($row["M"]);
-            $label_punggung = trim($row["O"]);
-            $fitur         = trim($row["P"]);
-            $warna         = trim($row["Q"]);
-            $video         = trim($row["S"]);
+            $headkategori      = trim($row["D"]);
+            $subkategori      = trim($row["E"]);
+            $partid        = trim($row["F"]);
+            $gambar        = trim($row["G"]);
+            $ukuran_karton = trim($row["H"]);
+            $row_material  = trim($row["I"]);
+            $mekanik       = trim($row["J"]);
+            $ukuran        = trim($row["K"]);
+            $kapasitas     = trim($row["L"]);
+            $kapasitasukuran     = trim($row["M"]);
+            $punggung             = trim($row["N"]);
+            $punggung_ukuran      = trim($row["O"]);
+            $label_punggung = trim($row["P"]);
+            $fitur         = trim($row["Q"]);
+            $warna         = trim($row["R"]);
+            $warna_ukuran         = trim($row["S"]);
+            $video         = trim($row["T"]);
 
             // Lewati baris kosong
             if ($no === '' && $partid === '') continue;
@@ -131,7 +137,8 @@ class ImportExcelKatalogModel extends Models
 
             $no            = $escape($no);
             $jenis         = $escape($jenis);
-            $kategori      = $escape($kategori);
+            $headkategori      = $escape($headkategori);
+            $subkategori      = $escape($subkategori);
             $gambar        = $escape($gambar);
             $ukuran_karton = $escape($ukuran_karton);
             $row_material  = $escape($row_material);
@@ -149,11 +156,13 @@ class ImportExcelKatalogModel extends Models
                 IF NOT EXISTS (SELECT 1 FROM " . $this->table_produk . " WHERE Partid = '{$partid}')
                 BEGIN
                     INSERT INTO " . $this->table_produk . " 
-                    (NoExel, Jenis, HeaderKategori, Partid, Gambar, UkuranKarton, RawMaterial, Mekanik, Ukuran,
-                    Kapasitas, Punggung, LabelPunggung, Fitur, KodeWarna, Video, CreateUser)
+                    (NoExel, Jenis, HeaderKategori,SubKategori, Partid, Gambar, UkuranKarton, RawMaterial, Mekanik, Ukuran,
+                    Kapasitas, Punggung, LabelPunggung, Fitur, KodeWarna, Video, CreateUser,
+                    KapasitasUkuran, PunggungUkuran, WaranUkuran)
                     VALUES
-                    ('{$no}', '{$jenis}', '{$kategori}', '{$partid}', '{$gambar}', '{$ukuran_karton}', '{$row_material}', '{$mekanik}', '{$ukuran}',
-                    '{$kapasitas}', '{$punggung}', '{$label_punggung}', '{$fitur}', '{$warna}', '{$video}', '{$username}')
+                    ('{$no}', '{$jenis}', '{$headkategori}','{$subkategori}', '{$partid}', '{$gambar}', '{$ukuran_karton}', '{$row_material}', '{$mekanik}', '{$ukuran}',
+                    '{$kapasitas}', '{$punggung}', '{$label_punggung}', '{$fitur}', '{$warna}', '{$video}', '{$username}',
+                    '{$kapasitasukuran}', '{$punggung_ukuran}', '{$warna_ukuran}')
                 END
             ";
 
@@ -262,39 +271,60 @@ class ImportExcelKatalogModel extends Models
 
      // untuk tampil data  produk list
 
-     public function listdata(){
-         $data = file_get_contents('php://input');
-         $post = json_decode($data, true);
-    
-         $kategori = isset($post["kategori"]) ? str_replace('-', ' ', $post["kategori"]) : '';
-        $query  ="USP_TampilProdukKatalog '{$kategori}'";
-        //$this->consol_war($query);
-  
-        $result= $this->db->baca_sql2($query);
-            $datafull =[];
-            while(odbc_fetch_row($result)){
-                $datafull[] =[
-                    "NoExel"=>rtrim(odbc_result($result,'NoExel')),
-                    "Jenis"=>rtrim(odbc_result($result,'Jenis')),
-                    "Kategori"=>rtrim(odbc_result($result,'Kategori')),
-                    "Partid"=>rtrim(odbc_result($result,'Partid')),
-                    "Gambar"=>rtrim(odbc_result($result,'Gambar')),
-                    "UkuranKarton"=>rtrim(odbc_result($result,'UkuranKarton')),
-                    "RawMaterial"=>rtrim(odbc_result($result,'RawMaterial')),
-                    "Mekanik"=>rtrim(odbc_result($result,'Mekanik')),
-                    "Ukuran"=>rtrim(odbc_result($result,'Ukuran')),
-                    "Kapasitas"=>rtrim(odbc_result($result,'Kapasitas')),
-                    "Punggung"=>rtrim(odbc_result($result,'Punggung')),
-                    "LabelPunggung"=>rtrim(odbc_result($result,'LabelPunggung')),
-                    "Fitur"=>rtrim(odbc_result($result,'Fitur')),
-                    "KodeWarna"=>rtrim(odbc_result($result,'KodeWarna')),
-                    "Video"=>rtrim(odbc_result($result,'Video')),
+   public function listdata()
+    {
+        // Ambil input JSON
+        $data = file_get_contents('php://input');
+        $post = json_decode($data, true);
+
+        // Validasi dan normalisasi kategori
+        $kategori = isset($post['kategori']) ? str_replace('-', ' ', trim($post['kategori'])) : '';
+
+        if (empty($kategori)) {
+            $this->consol_war("Kategori kosong, query dibatalkan.");
+            return [];
+        }
+
+        // Buat query SQL (panggil stored procedure)
+        $query = "EXEC USP_TampilProdukKatalog '{$kategori}'";
+        // $this->consol_war("Menjalankan query: $query");
+
+        // Jalankan query
+        $result = $this->db->baca_sql2($query);
+
+        // Siapkan array hasil
+        $datafull = [];
+
+        if ($result) {
+            while (odbc_fetch_row($result)) {
+                $datafull[] = [
+                    "NoExel"          => trim(odbc_result($result, 'NoExel')),
+                    "Jenis"           => trim(odbc_result($result, 'Jenis')),
+                    "Kategori"        => trim(odbc_result($result, 'HeaderKategori')),
+                    "Partid"          => trim(odbc_result($result, 'Partid')),
+                    "Gambar"          => trim(odbc_result($result, 'Gambar')),
+                    "UkuranKarton"    => trim(odbc_result($result, 'UkuranKarton')),
+                    "RawMaterial"     => trim(odbc_result($result, 'RawMaterial')),
+                    "Mekanik"         => trim(odbc_result($result, 'Mekanik')),
+                    "Ukuran"          => trim(odbc_result($result, 'Ukuran')),
+                    "Kapasitas"       => trim(odbc_result($result, 'Kapasitas')) . ' ' . trim(odbc_result($result, 'KapasitasUkuran')),
+                    "Punggung"        => trim(odbc_result($result, 'Punggung')) . ' ' . trim(odbc_result($result, 'PunggungUkuran')),
+                    "LabelPunggung"   => trim(odbc_result($result, 'LabelPunggung')),
+                    "Fitur"           => trim(odbc_result($result, 'Fitur')),
+                    "KodeWarna"       => trim(odbc_result($result, 'KodeWarna')) . ' ' . trim(odbc_result($result, 'WaranUkuran')),
+                    "Video"           => trim(odbc_result($result, 'Video')),
+                    "KapasitasUkuran" => trim(odbc_result($result, 'KapasitasUkuran')),
+                    "PunggungUkuran"  => trim(odbc_result($result, 'PunggungUkuran')),
+                    "WaranUkuran"     => trim(odbc_result($result, 'WaranUkuran')),
                 ];
-
             }
+        } else {
+            $this->consol_war("Gagal menjalankan query: $query");
+        }
 
-            //$this->consol_war($datafull);
-           return $datafull;
-     }
+        //$this->consol_war($datafull);
+        // Kembalikan hasil
+        return $datafull;
+    }
 }
 ?>

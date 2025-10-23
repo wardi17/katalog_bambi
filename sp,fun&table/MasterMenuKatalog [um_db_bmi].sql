@@ -1,16 +1,4 @@
 
-use [um_db_bmi]
-GO
-DROP TABLE MasterMenuKatalog
-CREATE TABLE dbo.MasterMenuKatalog (
-    MenuID INT IDENTITY(1,1) PRIMARY KEY,
-    Romawi INT NULL,
-    SubRomawi INT NULL,
-    NamaMenu NVARCHAR(100) NOT NULL,     -- contoh: 'Bambi PVC', 'Paper Lever Arch Files'
-    HeaderKategori NVARCHAR(100) NULL, -- contoh: 'PVC LAF', 'PAPER', 'BOX FILES'
-    SubKategori NVARCHAR(100) NULL -- contoh: 'Bambi PVC LAF FC', 'Bestin PVC Box Files 616'
-);
-
 USE um_db_bmi
 GO
 
@@ -32,10 +20,14 @@ GO
 -- ===========================
 -- INSERT DATA MENU KATALOG
 -- ===========================
-
+ UPDATE MasterMenuKatalog SET NamaMenu ='PVC LAF' WHERE Romawi =1 AND SubRomawi =1
 -- I
 INSERT INTO MasterMenuKatalog (Romawi, NamaMenu, HeaderKategori)
-VALUES (1, 'Bambi PVC Lever Arch Files BC', 'PVC LAF')
+VALUES (1, 'PVC Lever Arch Files', 'PVC')
+GO
+
+INSERT INTO MasterMenuKatalog (Romawi,SubRomawi, NamaMenu, HeaderKategori,SubKategori)
+VALUES (1,1,'PVC LAF', 'PVC','PVC LAF')
 GO
 
 -- II
@@ -43,27 +35,24 @@ INSERT INTO MasterMenuKatalog (Romawi, NamaMenu, HeaderKategori)
 VALUES (2, 'Paper Lever Arch Files', 'PAPER')
 GO
 INSERT INTO MasterMenuKatalog (Romawi, SubRomawi, NamaMenu, HeaderKategori)
-VALUES (2, 1, 'BINDEX ECOLOGIC', 'PAPER')
-GO
-INSERT INTO MasterMenuKatalog (Romawi, SubRomawi, NamaMenu, HeaderKategori)
-VALUES (2, 2, 'BINDEX LAMINATED', 'PAPER')
+VALUES (2, 1, 'BINDEX ECOLOGIY', 'PAPER')
 GO
 
--- III
-INSERT INTO MasterMenuKatalog (Romawi, NamaMenu, HeaderKategori)
-VALUES (3, 'BENEX LABEL', 'PAPER')
+INSERT INTO MasterMenuKatalog (Romawi,SubRomawi, NamaMenu, HeaderKategori)
+VALUES (2,2, 'BENEX LABELA', 'PAPER')
 GO
 INSERT INTO MasterMenuKatalog (Romawi, SubRomawi, NamaMenu, HeaderKategori)
-VALUES (3, 1, 'BENEX KARDU', 'PAPER')
+VALUES (2,3, 'BENEX LAMI', 'PAPER')
 GO
-INSERT INTO MasterMenuKatalog (Romawi, SubRomawi, NamaMenu, HeaderKategori)
-VALUES (3, 2, 'BENEX MARBLE (New)', 'PAPER')
-GO
+
 
 -- IV
-INSERT INTO MasterMenuKatalog (Romawi, NamaMenu, HeaderKategori)
-VALUES (4, 'Bestin PVC Lever Arch File 616, 626, 636', 'BOX FILES')
-GO
+-- INSERT INTO MasterMenuKatalog (Romawi, NamaMenu, HeaderKategori)
+-- VALUES (4, 'Bestin PVC Lever Arch File 616, 626, 636', 'BOX FILES')
+-- GO
+-- INSERT INTO MasterMenuKatalog (Romawi,SubRomawi, NamaMenu, HeaderKategori)
+-- VALUES (4,1,'Box File DIGITAL 6034,6033', 'BOX FILES')
+-- GO
 
 -- V
 INSERT INTO MasterMenuKatalog (Romawi, NamaMenu, HeaderKategori)
@@ -101,6 +90,7 @@ INSERT INTO MasterMenuKatalog (Romawi, NamaMenu, HeaderKategori)
 VALUES (10, 'Clipfiles & Clipboards', 'PRESENTATION FOLDERS')
 GO
 
+
 -- XI
 INSERT INTO MasterMenuKatalog (Romawi, NamaMenu, HeaderKategori)
 VALUES (11, 'Zipper Pockets', 'ZIPPER')
@@ -137,10 +127,10 @@ INSERT INTO MasterMenuKatalog (Romawi, NamaMenu)
 VALUES (16, 'PP Pockets / Sheet Protectors')
 GO
 INSERT INTO MasterMenuKatalog (Romawi, SubRomawi, NamaMenu)
-VALUES (16, 1, 'BAMBI', NULL)
+VALUES (16, 1, 'BAMBI')
 GO
 INSERT INTO MasterMenuKatalog (Romawi, SubRomawi, NamaMenu)
-VALUES (16, 2, 'BENDEX, BENEX', NULL)
+VALUES (16, 2, 'BENDEX, BENEX')
 GO
 
 -- XVII
@@ -152,22 +142,30 @@ GO
 INSERT INTO MasterMenuKatalog (Romawi, NamaMenu)
 VALUES (18, 'PP Dividers & Indexes')
 GO
+INSERT INTO MasterMenuKatalog (Romawi,SubRomawi,NamaMenu)
+VALUES (18,1, 'BAMBI')
+GO
+INSERT INTO MasterMenuKatalog (Romawi,SubRomawi,NamaMenu)
+VALUES (18,2, 'BAMBI,BENEX')
+GO
 
 -- XIX
-INSERT INTO MasterMenuKatalog (Romawi, NamaMenu)
-VALUES (19, 'Display Book PP Pockets & Menu Holders')
-GO
-INSERT INTO MasterMenuKatalog (Romawi, SubRomawi, NamaMenu)
-VALUES (19, 1, 'STANDARD & PVC PRINTING', NULL)
-GO
-INSERT INTO MasterMenuKatalog (Romawi, SubRomawi, NamaMenu)
-VALUES (19, 2, 'Reflex Printing', NULL)
-GO
+-- INSERT INTO MasterMenuKatalog (Romawi, NamaMenu)
+-- VALUES (19, 'Display Book PP Pockets & Menu Holders')
+-- GO
 
 -- XX
 INSERT INTO MasterMenuKatalog (Romawi, NamaMenu)
 VALUES (20, 'Binder Notes')
 GO
+INSERT INTO MasterMenuKatalog (Romawi, SubRomawi, NamaMenu)
+VALUES (20, 1, 'STANDARD & PVC PRINTING')
+GO
+INSERT INTO MasterMenuKatalog (Romawi, SubRomawi, NamaMenu)
+VALUES (20, 2, 'Reflex Printing')
+GO
+
+-- baru sampai sini
 
 -- XXI
 INSERT INTO MasterMenuKatalog (Romawi, NamaMenu)
